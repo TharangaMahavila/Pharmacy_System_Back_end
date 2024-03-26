@@ -21,13 +21,13 @@ customerRoute.post('/create',
     customerController.createNewCustomer
 );
 
-customerRoute.post('/softDelete/:customerId', 
+customerRoute.delete('/softDelete/:customerId', 
     authMiddleware.validateRolePermission([Role.OWNER, Role.MANAGER]),
     customerMiddleware.validateCustomerAlreadyExistAndActive,
     customerController.softDeleteCustomerById
 );
 
-customerRoute.post('/delete/:customerId', 
+customerRoute.delete('/delete/:customerId', 
     authMiddleware.validateRolePermission([Role.OWNER]),
     customerMiddleware.validateCustomerAlreadyExist,
     customerController.permanentlyDeleteCustomerById
