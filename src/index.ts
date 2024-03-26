@@ -3,7 +3,6 @@ import dotenv from 'dotenv';
 import { routes } from './routes/index.routes';
 import { getDBInstance } from './database';
 import bodyParser from 'body-parser';
-import userService from './service/user.service';
 import session, { Store } from 'express-session';
 import passport from 'passport';
 import SQLiteStore from 'connect-sqlite3';
@@ -41,13 +40,6 @@ app.use(passport.session());
 app.use('/api/v1/', routes);
 
 getDBInstance();
-userService.create({
-  username: 'admin', 
-  firstName: 'admin', 
-  lastName: undefined,
-  role: 'Owner',
-  password: 'admin'
-})
 
 // start the server
 app.listen(process.env.PORT, () => {

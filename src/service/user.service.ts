@@ -6,8 +6,10 @@ import userDao from "../dao/user.dao";
 
 class UserService implements CRUD {
     
+    tableName = 'users';
+
     async getAll() {
-        const users: any[] = await commonDao.getAll('users');
+        const users: any[] = await commonDao.getAll(this.tableName);
         return users.map((user) => {
             delete user.password;
             return user;
@@ -16,7 +18,7 @@ class UserService implements CRUD {
 
     async create(resource: any) {
         return commonDao.create(
-            'users', 
+            this.tableName, 
             [
                 'username',
                 'first_name',
@@ -59,14 +61,14 @@ class UserService implements CRUD {
         if(resource.password) {
             user.password = (await bcrypt.hash(resource.password, 10)).toString();
         }
-        const result = await commonDao.updateById('users', 'id', id, Object.keys(user), Object.values(user));
+        const result = await commonDao.updateById(this.tableName, 'id', id, Object.keys(user), Object.values(user));
         if(result) {
             return 'User updated';
         }
     }
 
     async getById(resourceId: any) {
-        const user = await commonDao.getById('users', 'id', resourceId);
+        const user = await commonDao.getById(this.tableName, 'id', resourceId);
         if(user.length > 0) {
             delete user[0].password;
         }
@@ -77,14 +79,14 @@ class UserService implements CRUD {
         if(resourceId === '1') {
             return 'You cannot deactivate the admin user';
         }
-        return commonDao.softDeleteById('users', "id", resourceId);
+        return commonDao.softDeleteById(this.tableName, "id", resourceId);
     }
 
     async permanentlyDeleteById(resourceId: any) {
         if(resourceId === '1') {
             return 'You cannot delete the admin user';
         }
-        return commonDao.permanentlyDeleteById('users', "id", resourceId);
+        return commonDao.permanentlyDeleteById(this.tableName, "id", resourceId);
     }
 
     async getByUsername(username: any) {

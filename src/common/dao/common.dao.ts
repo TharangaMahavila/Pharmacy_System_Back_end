@@ -1,5 +1,4 @@
-import { getDBInstance, db} from "../../database";
-import { Role } from "../role.enum";
+import { db } from "../../database";
 
 class CommonDao {
     async getAll(modelName: any) {
