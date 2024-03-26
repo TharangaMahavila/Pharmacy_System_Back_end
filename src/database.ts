@@ -1,4 +1,5 @@
 import sqlite from "sqlite3";
+import userService from "./service/user.service";
 
 const sqlite3 = sqlite.verbose();
 let dropSql: string[] = [];
@@ -6,7 +7,7 @@ let createSql: string[] = [];
 
 let db: sqlite.Database;
 
-export const connectToDB = () => {
+export const connectToDB = async () => {
     db = new sqlite3.Database('./pharmacy_system.db', sqlite3.OPEN_READWRITE, (err) => {
         if(err) {
             return console.error(err.message);
@@ -14,6 +15,7 @@ export const connectToDB = () => {
     });
 
     dropSql.push(`DROP TABLE IF EXISTS users`);
+    dropSql.push(`DROP TABLE IF EXISTS customers`);
 
     createSql.push(
         `CREATE TABLE IF NOT EXISTS users 
@@ -29,12 +31,37 @@ export const connectToDB = () => {
         )`
     );
 
-    dropSql.map((sql) => {
-        db.run(sql);
-    });
+    createSql.push(
+        `CREATE TABLE IF NOT EXISTS customers 
+        (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            first_name VARCHAR NOT NULL,
+            last_name VARCHAR,
+            contact VARCHAR,
+            active BOOLEAN DEFAULT 1
+        )`
+    );
 
-    createSql.map((sql) => {
-        db.run(sql);
+    const dropTables = async () => {
+        for(let query of dropSql) {
+            await db.exec(query);
+        }
+    }
+
+    const createTables = async () => {
+        for(let query of createSql) {
+            await db.exec(query);
+        }
+    }
+
+    await dropTables();
+    await createTables();
+    userService.create({
+        username: 'admin', 
+        firstName: 'admin', 
+        lastName: undefined,
+        role: 'Owner',
+        password: 'admin'
     });
 
     return db;
