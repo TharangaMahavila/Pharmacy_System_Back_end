@@ -16,6 +16,7 @@ export const connectToDB = async () => {
 
     dropSql.push(`DROP TABLE IF EXISTS users`);
     dropSql.push(`DROP TABLE IF EXISTS customers`);
+    dropSql.push(`DROP TABLE IF EXISTS medicine`);
 
     createSql.push(
         `CREATE TABLE IF NOT EXISTS users 
@@ -38,6 +39,17 @@ export const connectToDB = async () => {
             first_name VARCHAR NOT NULL,
             last_name VARCHAR,
             contact VARCHAR,
+            active BOOLEAN DEFAULT 1
+        )`
+    );
+
+    createSql.push(
+        `CREATE TABLE IF NOT EXISTS medicine 
+        (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name VARCHAR NOT NULL,
+            description VARCHAR NOT NULL,
+            quantity REAL DEFAULT 0,
             active BOOLEAN DEFAULT 1
         )`
     );

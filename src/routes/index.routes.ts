@@ -5,6 +5,7 @@ import authMiddleware from '../middleware/auth.middleware';
 import { openRoute } from './open.routes';
 import { Role } from '../common/role.enum';
 import { customerRoute } from './customer.routes';
+import { medicineRoute } from './medicine.routes';
 
 export const routes = express.Router();
 
@@ -19,4 +20,9 @@ routes.use('/customer',
     authMiddleware.isUserAuthenticated,
     authMiddleware.validateRolePermission([Role.OWNER, Role.MANAGER, Role.CASHIER]),
     customerRoute
+);
+routes.use('/medicine', 
+    authMiddleware.isUserAuthenticated,
+    authMiddleware.validateRolePermission([Role.OWNER, Role.MANAGER, Role.CASHIER]),
+    medicineRoute
 );
