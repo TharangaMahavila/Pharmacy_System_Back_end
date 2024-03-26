@@ -22,13 +22,13 @@ userRoute.post('/create',
     UserController.createNewUser
 );
 
-userRoute.post('/softDelete/:userId', 
+userRoute.delete('/softDelete/:userId', 
     authMiddleware.validateRolePermission([Role.OWNER]),
     userMiddleware.validateUserAlreadyExistAndActive,
     UserController.softDeleteUserById
 );
 
-userRoute.post('/delete/:userId', 
+userRoute.delete('/delete/:userId', 
     authMiddleware.validateRolePermission([Role.OWNER]),
     userMiddleware.validateUserAlreadyExist,
     UserController.permanentlyDeleteUserById

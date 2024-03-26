@@ -21,13 +21,13 @@ medicineRoute.post('/create',
     medicineController.createNewMedicine
 );
 
-medicineRoute.post('/softDelete/:medicineId', 
+medicineRoute.delete('/softDelete/:medicineId', 
     authMiddleware.validateRolePermission([Role.OWNER, Role.MANAGER]),
     medicineMiddleware.validateMedicineAlreadyExistAndActive,
     medicineController.softDeleteMedicineById
 );
 
-medicineRoute.post('/delete/:medicineId', 
+medicineRoute.delete('/delete/:medicineId', 
     authMiddleware.validateRolePermission([Role.OWNER]),
     medicineMiddleware.validateMedicineAlreadyExist,
     medicineController.permanentlyDeleteMedicineById
