@@ -1,5 +1,4 @@
 import express from 'express';
-import userService from '../service/user.service';
 import customerService from '../service/customer.service';
 
 class CustomerMiddleware {
@@ -32,11 +31,11 @@ class CustomerMiddleware {
 
     async validateCustomerAlreadyExist(req: express.Request, res: express.Response, next: express.NextFunction) {
         try {
-            const customer = await userService.getById(req.params.customerId);
+            const customer = await customerService.getById(req.params.customerId);
             if(customer.length > 0) {
                 return next();
             }
-            return res.status(404).send('User not found');
+            return res.status(404).send('Customer not found');
         } catch (error) {
             return res.status(500).send('Something went wrong')
         }
